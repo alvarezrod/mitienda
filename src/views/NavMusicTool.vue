@@ -11,8 +11,14 @@
     >
       ☰ Cart
     </button>
-    <a href="#" id="aboutUs" class="btn btn-light ms-2">About Us</a>
-    <a href="#" id="login" class="btn btn-light ms-2">Login/Register</a>
+    <router-link to="/" class="btn btn-light ms-2"
+      >Lista de Productos</router-link
+    >
+    <router-link to="/sobre-nosotros" class="btn btn-light ms-2"
+      >About Us</router-link
+    >
+    <button class="btn btn-light ms-2" @click="showModal">Login</button>
+    <SubscribeCustomer ref="subscribeModal" />
   </div>
 
   <!-- OFFCANVAS DERECHO -->
@@ -49,3 +55,41 @@
     </div>
   </div>
 </template>
+
+<script>
+import SubscribeCustomer from "./SubscribeCustomer.vue";
+export default {
+  name: "NavMusicTool",
+
+  components: {
+    SubscribeCustomer,
+  },
+
+  data() {
+    return {
+      localusuario: window.localStorage,
+
+      localstorageEmulator: {
+        users: [],
+        addUser: function (email, password) {
+          this.users.push({ email: email, password: password });
+          this.localusuario.setItem("users", JSON.stringify(this.users));
+        },
+        getUser: function (email) {
+          return this.users.find((user) => user.email === email);
+        },
+        deleteUser: function (email) {
+          this.users = this.users.filter((user) => user.email !== email);
+          this.localusuario.setItem("users", JSON.stringify(this.users));
+        },
+      },
+    };
+  },
+
+  methods: {
+    showModal() {
+      this.$refs.subscribeModal.openModal();
+    },
+  },
+};
+</script>

@@ -6,6 +6,9 @@
       <p class="card-text">
         {{ producto.descripcion }}
       </p>
+      <p class="card-text">
+        <strong>Precio: ${{ producto.precio }}</strong>
+      </p>
       <router-link
         :to="{ name: 'DetalleProducto', params: { id: producto.id } }"
       >
