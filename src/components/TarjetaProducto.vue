@@ -14,15 +14,26 @@
       >
         <a href="#" class="btn btn-primary">Leer mas</a>
       </router-link>
+      <button @click="addProductoCarrito" class="btn btn-success mt-2">
+        Agregar al carrito
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  emits: ["addToCart"],
   name: "TarjetaProducto",
   props: {
     producto: Object,
+  },
+
+  methods: {
+    addProductoCarrito() {
+      console.log("PProducto agregado al carrito:", this.producto);
+      this.$emit("addToCart", this.producto);
+    },
   },
 };
 </script>

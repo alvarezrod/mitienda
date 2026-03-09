@@ -84,10 +84,6 @@ const products = [
   { code: "cod90", name: "Guitar Amplifier", price: 249.99 },
 ];
 
-function showAlert() {
-  alert("¡Hola! Has hecho clic en el botón.");
-}
-
 function updateCartTotal() {
   const total = cartItems.reduce((sum, item) => sum + item.price, 0);
   const cartTotalElement = document.getElementById("cart-total");
@@ -229,20 +225,6 @@ function updateCartSummary() {
   summaryList.appendChild(table);
 }
 
-// Llama a updateCartSummary cada vez que se actualiza el carrito
-function showCart() {
-  const cartList = document.getElementById("cartList");
-  cartList.innerHTML = "";
-  cartItems.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-    cartList.appendChild(li);
-  });
-  updateCartSummary();
-  updateCartTotal();
-  updateCartSummary();
-}
-
 // Escuchar el evento de clic en el botón "Add Cart"
 
 function showProductAddedModal() {
@@ -367,8 +349,9 @@ function getDolar() {
         console.log(dolarData);
         if (dolarData.serie && dolarData.serie.length > 0) {
           let dolarOficial = dolarData.serie[0].valor;
-          document.getElementById("dolar-valor").textContent =
-            `Dólar Oficial: $${dolarOficial}`;
+          document.getElementById(
+            "dolar-valor",
+          ).textContent = `Dólar Oficial: $${dolarOficial}`;
         } else {
           document.getElementById("dolar-valor").textContent =
             "Dólar Oficial: No disponible";

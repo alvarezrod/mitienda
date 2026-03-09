@@ -1,8 +1,8 @@
 <template>
-  <nav>
+  <!--nav>
     <router-link to="/">Lista Productos</router-link> |
     <router-link to="/sobre-nosotros">Sobre Nosotros</router-link>
-  </nav>
+  </!nav-->
   <div><NavMusic /></div>
   <div>
     <NavMusicTool />

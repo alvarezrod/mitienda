@@ -5,6 +5,7 @@
       v-for="producto in productos"
       :key="producto.id"
       :producto="producto"
+      @addToCart="addToCart"
     />
   </div>
   <div class="d-flex justify-content-center">
@@ -31,6 +32,7 @@
 <script>
 import TarjetaProducto from "@/components/TarjetaProducto.vue";
 import ServiciosProductos from "@/servicios/ServiciosProductos.js";
+
 import { watchEffect } from "vue";
 
 export default {
@@ -40,7 +42,7 @@ export default {
     TarjetaProducto,
   },
   props: ["page"],
-  
+
   data() {
     return {
       productos: null,
@@ -56,14 +58,13 @@ export default {
     },
   },
   created() {
-    
     watchEffect(() => {
       this.productos = null;
       ServiciosProductos.obtenerProductos(5, this.page)
         .then((response) => {
           this.productos = response.data;
-          this.totalProductos = (response.headers["x-total-count"]);
-          
+          this.totalProductos = response.headers["x-total-count"];
+
           console.log("total--- Productos:", this.totalProductos);
         })
         .catch((error) => {
@@ -71,7 +72,12 @@ export default {
         });
     });
   },
-  
+  methods: {
+    addToCart(producto) {
+      console.log(" yes Producto agregado al carrito:", producto);
+      this.$store.dispatch("agregarProducto", producto);
+    },
+  },
 };
 </script>
 
