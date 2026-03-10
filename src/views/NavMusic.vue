@@ -32,13 +32,15 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "NavMusic",
 
   data() {
     return {
-      username: "",
-      emailuser: "",
+      username: ref(""),
+      emailuser: ref(""),
     };
   },
 
@@ -54,13 +56,6 @@ export default {
     },
   },
 
-  mounted() {
-    // Cargar datos del localStorage si existen
-    const storedName = localStorage.getItem("customerName");
-    const storedEmail = localStorage.getItem("customerEmail");
-    if (storedName && storedEmail) {
-      this.loadUserData(storedName, storedEmail);
-    }
-  },
+  mounted() {},
 };
 </script>

@@ -1,59 +1,42 @@
 <template>
   <div
     class="modal fade"
-    id="suscriberModal"
+    id="loginModal"
     tabindex="-1"
-    aria-labelledby="suscriberModalLabel"
+    aria-labelledby="loginModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-warning">
-          <h5 class="modal-title" id="suscriberModalLabel">Suscribirse</h5>
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
           <button type="button" class="btn-close" @click="closeModal"></button>
         </div>
 
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label text-start d-block" for="modalName"
-              >Nombre</label
-            >
-            <input class="form-control" type="text" id="modalName" required />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label text-start d-block" for="modalEmail"
+            <label class="form-label text-start d-block" for="modalEmailLogin"
               >Email</label
             >
             <input
               class="form-control"
               type="email"
-              id="modalEmail"
+              id="modalEmailLogin"
               pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
               required
             />
           </div>
 
           <div class="mb-3">
-            <label class="form-label text-start d-block" for="modalPassword"
+            <label
+              class="form-label text-start d-block"
+              for="modalPasswordLogin"
               >Password</label
             >
             <input
               class="form-control"
               type="password"
-              id="modalPassword"
-              required
-            />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label text-start d-block" for="modalRePassword"
-              >Repetir Password</label
-            >
-            <input
-              class="form-control"
-              type="password"
-              id="modalRePassword"
+              id="modalPasswordLogin"
               required
             />
           </div>
@@ -64,7 +47,7 @@
             type="button"
             class="btn btn-primary"
             id="modalLoginBtn"
-            @click="storeCustomerData"
+            @click="validateUser"
           >
             Ingresar
           </button>
@@ -87,12 +70,12 @@ import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import NavMusic from "./NavMusic.vue";
 
 export default {
-  name: "SubscribeCustomer",
+  name: "LoginPortal",
   NavMusicTool: null,
 
   methods: {
     openModal() {
-      const modal = document.getElementById("suscriberModal");
+      const modal = document.getElementById("loginModal");
       if (modal) {
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
@@ -101,11 +84,11 @@ export default {
     closeModal() {
       // Quitar el foco de cualquier elemento dentro del modal
       const focusedElement = document.activeElement;
-      if (focusedElement && focusedElement.closest("#suscriberModal")) {
+      if (focusedElement && focusedElement.closest("#loginModal")) {
         focusedElement.blur();
       }
 
-      const modal = document.getElementById("suscriberModal");
+      const modal = document.getElementById("loginModal");
       if (modal) {
         const bootstrapModal = bootstrap.Modal.getInstance(modal);
         if (bootstrapModal) {
@@ -114,36 +97,42 @@ export default {
       }
     },
 
-    async storeCustomerData() {
-      const name = document.getElementById("modalName").value;
-      const email = document.getElementById("modalEmail").value;
-      const password = document.getElementById("modalPassword").value;
-      const rePassword = document.getElementById("modalRePassword").value;
+    async validateUser() {
+      const email = document.getElementById("modalEmailLogin").value;
+      const password = document.getElementById("modalPasswordLogin").value;
 
-      if (password !== rePassword) {
-        alert("Las contraseñas no coinciden");
+      console.log(
+        "Validando usuario con email: [" +
+          email +
+          "] y password: [" +
+          password +
+          "] desde LoginPortal.vue",
+      );
+
+      if (email === "" || password === "") {
+        alert("Por favor, completa ambos campos.");
         return;
       }
 
-      const id = email;
+      const checkUser = await this.$store.dispatch("user/validateUser", {
+        email,
+        password,
+      });
 
-      const existingUser = await this.$store.dispatch("user/getUser", id);
-
-      //console.log("Existing user:", existingUser);
-
-      if (existingUser) {
-        alert("El usuario ya existe");
-        return;
-      } else {
-        this.$store.dispatch("user/addUser", { name, email, password, id });
-        localStorage.setItem("customerName", name);
+      if (checkUser) {
+        NavMusic.methods.loadUserData(checkUser[0].name, email);
+        alert("Login exitoso!!!", checkUser);
+        localStorage.setItem("customerName", checkUser[0].name);
         localStorage.setItem("customerEmail", email);
         localStorage.setItem("customerPassword", password);
+        this.closeModal();
+      } else {
+        alert("Credenciales incorrectas. Por favor, inténtalo de nuevo.");
       }
 
       // Quitar foco antes de cerrar
       const focusedElement = document.activeElement;
-      if (focusedElement && focusedElement.closest("#suscriberModal")) {
+      if (focusedElement && focusedElement.closest("#loginModal")) {
         focusedElement.blur();
       }
       NavMusic.methods.loadUserData(name, email);

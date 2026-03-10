@@ -58,6 +58,8 @@ export default {
     },
   },
   created() {
+    this.getProducts();
+
     watchEffect(() => {
       this.productos = null;
       ServiciosProductos.obtenerProductos(5, this.page)
@@ -76,6 +78,10 @@ export default {
     addToCart(producto) {
       console.log(" yes Producto agregado al carrito:", producto);
       this.$store.dispatch("agregarProducto", producto);
+    },
+    getProducts() {
+      this.$store.dispatch("productos/settingproducts");
+      this.$store.dispatch("user/settingusers");
     },
   },
 };

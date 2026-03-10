@@ -1,6 +1,10 @@
 import { createStore } from "vuex";
 
 export default createStore({
+  modules: {
+    productos: require("@/store/productos").default,
+    user: require("@/store/user").default,
+  },
   state: {
     carrito: [],
   },

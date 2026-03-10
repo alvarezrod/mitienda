@@ -17,20 +17,26 @@
     <router-link to="/sobre-nosotros" class="btn btn-light ms-2"
       >About Us</router-link
     >
-    <button class="btn btn-light ms-2" @click="showModal">Login</button>
+    <button class="btn btn-light ms-2" @click="showModal">Submit</button>
     <SubscribeCustomer ref="subscribeModal" />
+
+    <button class="btn btn-light ms-2" @click="showLoginModal">Login</button>
+    <LoginPortal ref="loginModal" />
+
     <CartProduct />
   </div>
 </template>
 
 <script>
 import SubscribeCustomer from "./SubscribeCustomer.vue";
-import CartProduct from "@/store/CartProduct.vue";
+import LoginPortal from "./LoginPortal.vue";
+import CartProduct from "@/components/CartProduct.vue";
 export default {
   name: "NavMusicTool",
 
   components: {
     SubscribeCustomer,
+    LoginPortal,
     CartProduct,
   },
 
@@ -58,6 +64,9 @@ export default {
   methods: {
     showModal() {
       this.$refs.subscribeModal.openModal();
+    },
+    showLoginModal() {
+      this.$refs.loginModal.openModal();
     },
   },
   computed: {
