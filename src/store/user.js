@@ -9,6 +9,7 @@ export default {
   state: {
     user: [],
     loading: false,
+    lastUser: null,
   },
 
   // en español lo que viene de fuera como parametro
@@ -19,9 +20,19 @@ export default {
     SET_LOADING(state, estado) {
       state.loading = estado;
     },
+    SET_LAST_USER(state, user) {
+      state.lastUser = user;
+    },
   },
 
   actions: {
+    logoutUser({ commit }) {
+      localStorage.removeItem("customerName");
+      localStorage.removeItem("customerEmail");
+      localStorage.removeItem("customerPassword");
+      commit("SET_LAST_USER", null);
+    },
+
     async getUser({ commit }, id) {
       try {
         commit("SET_LOADING", true);
@@ -62,6 +73,7 @@ export default {
             "[validateUser] User data retrieved successfully:",
             salida,
           );
+          commit("SET_LAST_USER", salida[0]);
           return salida; // Se encontró un usuario con ese email y contraseña
         }
 
@@ -108,6 +120,7 @@ export default {
   },
 
   getters: {
-    allProducts: (state) => state.user,
+    allUsers: (state) => state.user,
+    lastUser: (state) => state.lastUser,
   },
 };

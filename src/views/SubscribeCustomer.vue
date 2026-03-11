@@ -139,6 +139,7 @@ export default {
         localStorage.setItem("customerName", name);
         localStorage.setItem("customerEmail", email);
         localStorage.setItem("customerPassword", password);
+        NavMusic.methods.loadUserData(name, email);
       }
 
       // Quitar foco antes de cerrar
@@ -146,7 +147,7 @@ export default {
       if (focusedElement && focusedElement.closest("#suscriberModal")) {
         focusedElement.blur();
       }
-      NavMusic.methods.loadUserData(name, email);
+
       this.closeModal();
     },
   },

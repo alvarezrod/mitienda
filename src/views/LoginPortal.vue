@@ -121,10 +121,11 @@ export default {
 
       if (checkUser) {
         NavMusic.methods.loadUserData(checkUser[0].name, email);
-        alert("Login exitoso!!!", checkUser);
+        // alert("Login exitoso!!!", checkUser[0].name);
         localStorage.setItem("customerName", checkUser[0].name);
         localStorage.setItem("customerEmail", email);
         localStorage.setItem("customerPassword", password);
+        console.log("Usuario validado:", checkUser[0].name);
         this.closeModal();
       } else {
         alert("Credenciales incorrectas. Por favor, inténtalo de nuevo.");
@@ -135,7 +136,7 @@ export default {
       if (focusedElement && focusedElement.closest("#loginModal")) {
         focusedElement.blur();
       }
-      NavMusic.methods.loadUserData(name, email);
+
       this.closeModal();
     },
   },

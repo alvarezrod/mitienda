@@ -18,11 +18,22 @@
             />
             <div class="ms-3 d-flex flex-column justify-content-center">
               <p class="mb-0 text-start" id="user-logged">
-                Usuario:{{ username }}
+                Usuario:{{
+                  this.$store.getters["user/lastUser"]?.name || "No registrado"
+                }}
               </p>
               <p class="mb-0 text-start" id="mail-logged">
-                Email:{{ emailuser }}
+                Email:{{
+                  this.$store.getters["user/lastUser"]?.email || "No registrado"
+                }}
               </p>
+              <button
+                v-if="this.$store.getters['user/lastUser']"
+                class="btn btn-sm btn-outline-light mt-2"
+                @click="$store.dispatch('user/logoutUser')"
+              >
+                Cerrar sesión
+              </button>
             </div>
           </div>
         </div>
@@ -44,18 +55,20 @@ export default {
     };
   },
 
-  methods: {
-    loadUserData(username, email) {
-      this.username = username;
-      this.emailuser = email;
-      console.log(
-        "User data loaded in NavMusic:",
-        this.username,
-        this.emailuser,
-      );
-    },
+  mounted() {
+    this.username = localStorage.getItem("username") || "";
+    this.emailuser = localStorage.getItem("emailuser") || "";
   },
 
-  mounted() {},
+  methods: {
+    loadUserData(username, email) {
+      console.log("Loading user data in NavMusic:", username, email);
+      this.username = username;
+      this.emailuser = email;
+
+      localStorage.setItem("username", username);
+      localStorage.setItem("emailuser", email);
+    },
+  },
 };
 </script>
